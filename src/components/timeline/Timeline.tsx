@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Flask, Certificate, BookOpen, CheckCircle, Star, ArrowsOut } from '@phosphor-icons/react';
+import { Flask, Certificate, BookOpen, CheckCircle, Star } from '@phosphor-icons/react';
 import { TIMELINE_EVENTS, PROJECTS } from '../../data/mockData';
 import { Badge } from '../ui/Badge';
 import { formatDate } from '../../lib/utils';
@@ -28,19 +28,20 @@ export function Timeline() {
   const years = [...new Set(events.map((e) => e.date.slice(0, 4)))].sort();
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex-1 overflow-y-auto bg-[#f8f9fb] p-6">
-      <div className="max-w-[1100px] mx-auto">
-        <div className="flex items-center justify-between mb-6">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1, transition: { duration: 0.2 } }} className="flex-1 overflow-y-auto" style={{ background: '#f7f8fc' }}>
+      <div className="max-w-[1100px] mx-auto px-8 py-6 space-y-6">
+        {/* Header */}
+        <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">Research Timeline</h2>
-            <p className="text-sm text-gray-500 mt-0.5">Complete scientific discovery journey · 2021–2026</p>
+            <h2 className="text-xl font-bold text-gray-900">Research Timeline</h2>
+            <p className="text-sm text-gray-400 mt-0.5">Complete scientific discovery journey · 2021–2026</p>
           </div>
 
           {/* Project filter */}
           <div className="flex items-center gap-2">
             <button
               onClick={() => setFilter(null)}
-              className={`text-sm px-2.5 py-1 rounded-lg transition-colors ${!filter ? 'bg-gray-800 text-white' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'}`}
+              className={`text-xs px-3 py-1.5 rounded-lg transition-colors ${!filter ? 'bg-gray-800 text-white font-semibold' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'}`}
             >
               All Projects
             </button>
@@ -48,7 +49,7 @@ export function Timeline() {
               <button
                 key={p.id}
                 onClick={() => setFilter(filter === p.id ? null : p.id)}
-                className={`text-sm px-2.5 py-1 rounded-lg transition-colors border ${filter === p.id ? 'text-white' : 'bg-white text-gray-500 border-gray-200 hover:bg-gray-50'}`}
+                className={`text-xs px-3 py-1.5 rounded-lg transition-colors border font-semibold ${filter === p.id ? 'text-white' : 'bg-white text-gray-500 border-gray-200 hover:bg-gray-50'}`}
                 style={filter === p.id ? { background: p.color, borderColor: p.color } : {}}
               >
                 {p.name.split(' ')[1]}
@@ -58,7 +59,7 @@ export function Timeline() {
         </div>
 
         {/* Legend */}
-        <div className="flex items-center gap-4 mb-6 flex-wrap">
+        <div className="flex items-center gap-4 flex-wrap">
           {Object.entries(TYPE_LABELS).map(([type, label]) => {
             const Icon = TYPE_ICONS[type];
             return (
@@ -85,7 +86,7 @@ export function Timeline() {
                     <div className="w-[124px] text-right">
                       <span className="text-3xl font-bold text-gray-200 select-none">{year}</span>
                     </div>
-                    <div className="w-3 h-3 rounded-full bg-gray-300 border-2 border-white -ml-[6px] z-10 relative" style={{ marginLeft: -6, boxShadow: '0 0 0 3px #f1f3f7' }} />
+                    <div className="w-3 h-3 rounded-full bg-gray-300 border-2 border-white z-10 relative" style={{ marginLeft: -6, boxShadow: '0 0 0 3px #f7f8fc' }} />
                   </div>
 
                   {yearEvents.map((event, i) => {
@@ -117,8 +118,7 @@ export function Timeline() {
 
                         {/* Card */}
                         <div
-                          className="flex-1 ml-2 py-2.5 px-3.5 bg-white rounded-xl border border-gray-100 hover:border-gray-200 hover:shadow-md transition-all cursor-pointer group-hover:-translate-y-0.5"
-                          style={{ boxShadow: '0 1px 4px rgba(0,0,0,0.06)' }}
+                          className="flex-1 ml-2 py-2.5 px-3.5 bg-white rounded-2xl border border-gray-100 hover:border-gray-200 hover:shadow-md transition-all cursor-pointer group-hover:-translate-y-0.5"
                         >
                           <div className="flex items-center gap-2">
                             <div className="w-5 h-5 rounded-md flex items-center justify-center shrink-0" style={{ background: event.color + '20' }}>
@@ -148,12 +148,12 @@ export function Timeline() {
         </div>
 
         {/* Future */}
-        <div className="mt-6 flex items-center gap-4">
+        <div className="flex items-center gap-4">
           <div className="w-[124px] text-right">
             <span className="text-xs text-gray-300">2027+</span>
           </div>
-          <div className="w-3 h-3 rounded-full border-2 border-dashed border-gray-300 -ml-[6px]" />
-          <div className="flex-1 ml-2 py-2.5 px-3.5 rounded-xl border-2 border-dashed border-gray-200">
+          <div className="w-3 h-3 rounded-full border-2 border-dashed border-gray-300" style={{ marginLeft: -6 }} />
+          <div className="flex-1 ml-2 py-2.5 px-3.5 rounded-2xl border-2 border-dashed border-gray-200">
             <span className="text-sm text-gray-400">Upcoming milestones: Helios IND Filing · Aurora Phase I · Meridian Phase II Readout</span>
           </div>
         </div>

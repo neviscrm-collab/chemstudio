@@ -18,7 +18,7 @@ export function ProjectDetail() {
   const exps = EXPERIMENTS.filter((e) => e.projectId === project.id);
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex-1 overflow-y-auto bg-[#f8f9fb]">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex-1 overflow-y-auto" style={{ background: '#f7f8fc' }}>
       {/* Hero */}
       <div className="bg-white border-b border-gray-100">
         <div className="max-w-[1200px] mx-auto px-6 pt-4 pb-0">

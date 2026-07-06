@@ -1,26 +1,36 @@
 import { motion } from 'framer-motion';
 import { Certificate, Plus } from '@phosphor-icons/react';
-import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 import { PATENTS } from '../../data/mockData';
 import { statusColor, formatDate } from '../../lib/utils';
 
 export function Patents() {
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex-1 overflow-y-auto bg-[#f8f9fb] p-6">
-      <div className="max-w-[900px] mx-auto space-y-4">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1, transition: { duration: 0.2 } }} className="flex-1 overflow-y-auto" style={{ background: '#f7f8fc' }}>
+      <div className="max-w-[1100px] mx-auto px-8 py-6 space-y-6">
+        {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">Patents</h2>
-            <p className="text-sm text-gray-500 mt-0.5">{PATENTS.length} filings · 4 jurisdictions</p>
+            <h2 className="text-xl font-bold text-gray-900">Patents</h2>
+            <p className="text-sm text-gray-400 mt-0.5">{PATENTS.length} filings · 4 jurisdictions</p>
           </div>
-          <button className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-medium hover:bg-blue-700">
-            <Plus size={13} weight="bold" />File Patent
-          </button>
+          <div className="flex items-center gap-2">
+            <button className="px-3 py-1.5 rounded-lg border border-gray-200 text-gray-500 text-xs hover:bg-gray-50">
+              Export
+            </button>
+            <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 shadow-sm shadow-blue-200">
+              <Plus size={12} weight="bold" />File Patent
+            </button>
+          </div>
         </div>
+
+        {/* Patent cards */}
         <div className="space-y-3">
           {PATENTS.map((pat) => (
-            <Card key={pat.id} hover padding="md">
+            <div
+              key={pat.id}
+              className="bg-white rounded-2xl border border-gray-100 p-5 hover:border-gray-200 hover:shadow-md transition-all cursor-pointer"
+            >
               <div className="flex items-start gap-3">
                 <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center shrink-0">
                   <Certificate size={16} className="text-red-600" />
@@ -38,14 +48,14 @@ export function Patents() {
                     <span>{pat.claims} claims</span>
                     <div className="flex gap-1">
                       {pat.jurisdiction.map((j) => (
-                        <span key={j} className="px-1.5 py-0.5 bg-gray-100 rounded text-xs font-medium text-gray-600">{j}</span>
+                        <span key={j} className="px-1.5 py-0.5 bg-blue-50 rounded text-xs font-semibold text-blue-600 border border-blue-100">{j}</span>
                       ))}
                     </div>
                   </div>
                   <div className="text-xs text-gray-400 mt-1">Inventors: {pat.inventors.join(', ')}</div>
                 </div>
               </div>
-            </Card>
+            </div>
           ))}
         </div>
       </div>

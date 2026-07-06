@@ -1,29 +1,29 @@
 import { motion } from 'framer-motion';
 import { Atom, Plus, FunnelSimple, MagnifyingGlass } from '@phosphor-icons/react';
-import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 import { MOLECULES } from '../../data/mockData';
 import { statusColor, formatDate } from '../../lib/utils';
 
 export function MoleculeLibrary() {
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex-1 overflow-y-auto bg-[#f8f9fb] p-6">
-      <div className="max-w-[1200px] mx-auto space-y-4">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1, transition: { duration: 0.2 } }} className="flex-1 overflow-y-auto" style={{ background: '#f7f8fc' }}>
+      <div className="max-w-[1100px] mx-auto px-8 py-6 space-y-6">
+        {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">Molecule Library</h2>
-            <p className="text-sm text-gray-500 mt-0.5">1,320 structures · 4 projects</p>
+            <h2 className="text-xl font-bold text-gray-900">Molecule Library</h2>
+            <p className="text-sm text-gray-400 mt-0.5">1,320 structures · 4 projects</p>
           </div>
           <div className="flex items-center gap-2">
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-gray-200 bg-white text-sm text-gray-400">
-              <MagnifyingGlass size={13} />
-              <input placeholder="Search by name, SMILES, formula..." className="outline-none bg-transparent w-52 text-gray-700 placeholder:text-gray-400" />
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-gray-200 bg-white text-xs text-gray-400">
+              <MagnifyingGlass size={12} />
+              <input placeholder="Search by name, SMILES, formula..." className="outline-none bg-transparent w-52 text-gray-700 placeholder:text-gray-400 text-xs" />
             </div>
-            <button className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-gray-200 text-gray-500 text-sm hover:bg-gray-50">
-              <FunnelSimple size={13} />Filter
+            <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-200 text-gray-500 text-xs hover:bg-gray-50">
+              <FunnelSimple size={12} />Filter
             </button>
-            <button className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700">
-              <Plus size={13} weight="bold" />Draw Structure
+            <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 shadow-sm shadow-blue-200">
+              <Plus size={12} weight="bold" />Draw Structure
             </button>
           </div>
         </div>
@@ -31,9 +31,12 @@ export function MoleculeLibrary() {
         {/* Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
           {MOLECULES.map((mol) => (
-            <Card key={mol.id} hover padding="md">
+            <div
+              key={mol.id}
+              className="bg-white rounded-2xl border border-gray-100 p-4 hover:border-gray-200 hover:shadow-md transition-all cursor-pointer"
+            >
               {/* Molecule visualization */}
-              <div className="w-full h-28 rounded-lg mb-3 flex items-center justify-center" style={{ background: statusColor(mol.status) + '0d' }}>
+              <div className="w-full h-28 rounded-xl mb-3 flex items-center justify-center" style={{ background: statusColor(mol.status) + '0d' }}>
                 <svg viewBox="0 0 80 80" className="w-16 h-16">
                   <g stroke={statusColor(mol.status)} fill="none" strokeWidth="1.5" strokeLinecap="round">
                     <polygon points="40,10 58,20 58,40 40,50 22,40 22,20" opacity="0.8" />
@@ -70,18 +73,18 @@ export function MoleculeLibrary() {
                 </div>
                 <div className="text-xs text-gray-400 pt-0.5">{formatDate(mol.createdAt)}</div>
               </div>
-            </Card>
+            </div>
           ))}
 
           {/* Placeholder cards for the rest of the library */}
           {Array.from({ length: 10 }).map((_, i) => (
-            <Card key={`ph-${i}`} padding="md" className="opacity-40">
-              <div className="w-full h-28 rounded-lg mb-3 bg-gray-100 flex items-center justify-center">
+            <div key={`ph-${i}`} className="bg-white rounded-2xl border border-gray-100 p-4 opacity-40">
+              <div className="w-full h-28 rounded-xl mb-3 bg-gray-100 flex items-center justify-center">
                 <Atom size={24} className="text-gray-300" />
               </div>
               <div className="h-3 bg-gray-100 rounded w-3/4 mb-1.5" />
               <div className="h-2.5 bg-gray-100 rounded w-1/2" />
-            </Card>
+            </div>
           ))}
         </div>
       </div>

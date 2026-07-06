@@ -1,8 +1,8 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   House, FolderOpen, Flask, BookOpen, Certificate, Graph,
-  Calendar, Books, Robot, Bell, Gear, MagnifyingGlass,
-  ChartBar, Users, CaretRight, Atom
+  Calendar, Books, Bell, Gear, MagnifyingGlass,
+  CaretUpDown, Plus, Atom, ChartLineUp
 } from '@phosphor-icons/react';
 import { useAppStore } from '../../store/appStore';
 import { cn } from '../../lib/utils';
@@ -14,23 +14,20 @@ interface NavItem {
   id: ViewType;
   label: string;
   icon: React.ElementType;
-  badge?: number;
 }
 
-const NAV_ITEMS: NavItem[] = [
-  { id: 'dashboard', label: 'Dashboard', icon: House },
-  { id: 'projects', label: 'Projects', icon: FolderOpen },
-  { id: 'experiments', label: 'Experiments', icon: Flask },
-  { id: 'publications', label: 'Publications', icon: BookOpen },
-  { id: 'patents', label: 'Patents', icon: Certificate },
-  { id: 'knowledge_graph', label: 'Knowledge Graph', icon: Graph },
-  { id: 'timeline', label: 'Timeline', icon: Calendar },
-  { id: 'libraries', label: 'Molecule Library', icon: Atom },
+const MAIN_NAV: NavItem[] = [
+  { id: 'dashboard',      label: 'Dashboard',       icon: House },
+  { id: 'projects',       label: 'Projects',         icon: FolderOpen },
+  { id: 'experiments',    label: 'Experiments',      icon: Flask },
 ];
 
-const BOTTOM_ITEMS: NavItem[] = [
-  { id: 'templates', label: 'Templates', icon: Books },
-  { id: 'settings', label: 'Settings', icon: Gear },
+const RESEARCH_NAV: NavItem[] = [
+  { id: 'publications',   label: 'Publications',     icon: BookOpen },
+  { id: 'patents',        label: 'Patents',           icon: Certificate },
+  { id: 'knowledge_graph',label: 'Knowledge Graph',  icon: Graph },
+  { id: 'timeline',       label: 'Timeline',          icon: Calendar },
+  { id: 'libraries',      label: 'Molecule Library',  icon: Atom },
 ];
 
 export function Sidebar() {
@@ -39,82 +36,99 @@ export function Sidebar() {
 
   return (
     <motion.aside
-      animate={{ width: sidebarCollapsed ? 56 : 220 }}
-      transition={{ duration: 0.2, ease: 'easeInOut' }}
-      className="h-full flex flex-col bg-white border-r border-gray-100 shrink-0 overflow-hidden"
-      style={{ boxShadow: '1px 0 0 0 #e4e8ef' }}
+      animate={{ width: sidebarCollapsed ? 52 : 232 }}
+      transition={{ duration: 0.18, ease: [0.4, 0, 0.2, 1] }}
+      className="h-full flex flex-col shrink-0 overflow-hidden relative select-none"
+      style={{ background: '#0f0f11', borderRight: '1px solid rgba(255,255,255,0.06)' }}
     >
-      {/* Logo */}
-      <div className="flex items-center gap-2.5 px-4 py-4 border-b border-gray-100">
-        <div className="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center shrink-0">
-          <Flask size={15} color="white" weight="fill" />
+      {/* Workspace header */}
+      <div className={cn('flex items-center gap-2.5 px-3 py-3.5 border-b', sidebarCollapsed ? 'justify-center' : '')} style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+        <div className="w-7 h-7 rounded-lg bg-blue-500 flex items-center justify-center shrink-0">
+          <Flask size={14} color="white" weight="fill" />
         </div>
         <AnimatePresence>
           {!sidebarCollapsed && (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-              <span className="font-semibold text-gray-900 text-sm tracking-tight">ChemStudio</span>
-              <span className="text-xs text-blue-500 font-medium ml-1">2.0</span>
+            <motion.div
+              initial={{ opacity: 0, x: -6 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+              className="flex-1 min-w-0 flex items-center justify-between"
+            >
+              <div className="min-w-0">
+                <div className="text-sm font-semibold text-white tracking-tight leading-none">ChemStudio</div>
+                <div className="text-xs text-white/30 mt-0.5 leading-none">Novartis Pharma AG</div>
+              </div>
+              <CaretUpDown size={13} className="text-white/20 shrink-0" />
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
       {/* Search */}
-      <div className="px-2 py-2">
+      <div className="px-2 pt-2">
         <button
           onClick={() => setSearchOpen(true)}
           className={cn(
-            'w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-gray-400 hover:bg-gray-50 hover:text-gray-600 transition-colors',
+            'w-full flex items-center gap-2 px-2.5 py-1.5 rounded-md transition-colors',
+            'text-white/40 hover:text-white/70 hover:bg-white/5',
             sidebarCollapsed ? 'justify-center' : ''
           )}
         >
-          <MagnifyingGlass size={15} />
+          <MagnifyingGlass size={14} />
           {!sidebarCollapsed && (
-            <span className="text-sm flex-1 text-left">Search...</span>
-          )}
-          {!sidebarCollapsed && (
-            <span className="text-xs text-gray-300 border border-gray-200 rounded px-1">⌘K</span>
+            <>
+              <span className="text-xs flex-1 text-left">Search...</span>
+              <span className="text-xs text-white/20 border border-white/10 rounded px-1 py-0.5">⌘K</span>
+            </>
           )}
         </button>
       </div>
 
-      {/* Main Nav */}
-      <nav className="flex-1 px-2 py-1 overflow-y-auto space-y-0.5">
-        {NAV_ITEMS.map((item) => (
-          <NavBtn key={item.id} item={item} active={view === item.id} collapsed={sidebarCollapsed} onClick={() => setView(item.id)} />
-        ))}
+      {/* Nav */}
+      <nav className="flex-1 px-2 py-2 overflow-y-auto space-y-4">
+        <NavSection label="Main" collapsed={sidebarCollapsed}>
+          {MAIN_NAV.map((item) => (
+            <NavBtn key={item.id} item={item} active={view === item.id || (view === 'project_detail' && item.id === 'projects') || (view === 'experiment_detail' && item.id === 'experiments')} collapsed={sidebarCollapsed} onClick={() => setView(item.id)} />
+          ))}
+        </NavSection>
+
+        <NavSection label="Research" collapsed={sidebarCollapsed}>
+          {RESEARCH_NAV.map((item) => (
+            <NavBtn key={item.id} item={item} active={view === item.id} collapsed={sidebarCollapsed} onClick={() => setView(item.id)} />
+          ))}
+        </NavSection>
       </nav>
 
       {/* Bottom */}
-      <div className="px-2 py-2 space-y-0.5 border-t border-gray-100">
+      <div className="px-2 pb-2 space-y-0.5 border-t" style={{ borderColor: 'rgba(255,255,255,0.06)', paddingTop: 8 }}>
         <button
           onClick={() => setNotificationsOpen(true)}
           className={cn(
-            'w-full flex items-center gap-2.5 px-2 py-1.5 rounded-lg text-gray-500 hover:bg-gray-50 hover:text-gray-700 transition-colors relative',
+            'w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-md transition-colors text-white/40 hover:text-white/70 hover:bg-white/5 relative',
             sidebarCollapsed ? 'justify-center' : ''
           )}
         >
-          <Bell size={15} />
-          {!sidebarCollapsed && <span className="text-sm flex-1 text-left">Notifications</span>}
+          <Bell size={14} />
+          {!sidebarCollapsed && <span className="text-xs flex-1 text-left">Notifications</span>}
           {unread > 0 && (
-            <span className="absolute top-1 right-1 w-4 h-4 bg-blue-600 text-white text-xs rounded-full flex items-center justify-center font-semibold">
+            <span className={cn('bg-blue-500 text-white text-xs rounded-full flex items-center justify-center font-semibold leading-none', sidebarCollapsed ? 'absolute top-1 right-1 w-3.5 h-3.5 text-[9px]' : 'w-4 h-4 shrink-0')}>
               {unread}
             </span>
           )}
         </button>
-        {BOTTOM_ITEMS.map((item) => (
-          <NavBtn key={item.id} item={item} active={view === item.id} collapsed={sidebarCollapsed} onClick={() => setView(item.id)} />
-        ))}
+        <NavBtn item={{ id: 'templates', label: 'Templates', icon: Books }} active={view === 'templates'} collapsed={sidebarCollapsed} onClick={() => setView('templates')} />
+        <NavBtn item={{ id: 'settings', label: 'Settings', icon: Gear }} active={view === 'settings'} collapsed={sidebarCollapsed} onClick={() => setView('settings')} />
       </div>
 
       {/* User */}
-      <div className="px-2 py-3 border-t border-gray-100">
-        <div className={cn('flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-gray-50 cursor-pointer', sidebarCollapsed && 'justify-center')}>
+      <div className="px-2 pb-3 pt-2 border-t" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+        <div className={cn('flex items-center gap-2.5 px-2 py-1.5 rounded-md hover:bg-white/5 cursor-pointer transition-colors', sidebarCollapsed && 'justify-center')}>
           <Avatar user={CURRENT_USER} size="sm" showOnline />
           {!sidebarCollapsed && (
             <div className="min-w-0 flex-1">
-              <div className="text-sm font-medium text-gray-800 truncate">{CURRENT_USER.name}</div>
-              <div className="text-xs text-gray-400 truncate">{CURRENT_USER.title}</div>
+              <div className="text-xs font-medium text-white/80 truncate">{CURRENT_USER.name}</div>
+              <div className="text-xs text-white/30 truncate">{CURRENT_USER.title}</div>
             </div>
           )}
         </div>
@@ -123,12 +137,26 @@ export function Sidebar() {
       {/* Collapse toggle */}
       <button
         onClick={toggleSidebar}
-        className="absolute bottom-[72px] -right-3 w-6 h-6 bg-white border border-gray-200 rounded-full flex items-center justify-center shadow-sm hover:bg-gray-50 transition-colors z-10"
-        style={{ boxShadow: '0 1px 4px rgba(0,0,0,0.1)' }}
+        className="absolute top-[52px] -right-3 w-5 h-5 bg-[#1a1a1f] border border-white/10 rounded-full flex items-center justify-center shadow hover:bg-[#2a2a2f] transition-colors z-20"
       >
-        <CaretRight size={10} className={cn('text-gray-400 transition-transform', sidebarCollapsed ? '' : 'rotate-180')} />
+        <motion.div animate={{ rotate: sidebarCollapsed ? 0 : 180 }} transition={{ duration: 0.18 }}>
+          <CaretUpDown size={8} className="text-white/40 rotate-90" />
+        </motion.div>
       </button>
     </motion.aside>
+  );
+}
+
+function NavSection({ label, collapsed, children }: { label: string; collapsed: boolean; children: React.ReactNode }) {
+  return (
+    <div className="space-y-0.5">
+      {!collapsed && (
+        <div className="px-2.5 pb-1">
+          <span className="text-[10px] font-semibold uppercase tracking-widest text-white/20">{label}</span>
+        </div>
+      )}
+      {children}
+    </div>
   );
 }
 
@@ -137,19 +165,17 @@ function NavBtn({ item, active, collapsed, onClick }: { item: NavItem; active: b
   return (
     <button
       onClick={onClick}
+      title={collapsed ? item.label : undefined}
       className={cn(
-        'w-full flex items-center gap-2.5 px-2 py-1.5 rounded-lg transition-colors text-left',
+        'w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-md transition-all text-left',
         active
-          ? 'bg-blue-50 text-blue-700 font-medium'
-          : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700',
+          ? 'bg-white/10 text-white'
+          : 'text-white/40 hover:text-white/70 hover:bg-white/5',
         collapsed ? 'justify-center' : '',
       )}
     >
-      <Icon size={15} weight={active ? 'fill' : 'regular'} />
-      {!collapsed && <span className="text-sm flex-1">{item.label}</span>}
-      {!collapsed && item.badge !== undefined && (
-        <span className="text-xs bg-gray-100 text-gray-500 rounded-full px-1.5 py-0.5">{item.badge}</span>
-      )}
+      <Icon size={14} weight={active ? 'fill' : 'regular'} />
+      {!collapsed && <span className="text-xs font-medium flex-1">{item.label}</span>}
     </button>
   );
 }

@@ -15,6 +15,7 @@ import { KnowledgeGraph } from './components/graph/KnowledgeGraph';
 import { Timeline } from './components/timeline/Timeline';
 import { MoleculeLibrary } from './components/libraries/MoleculeLibrary';
 import { Settings } from './components/settings/Settings';
+import { Templates } from './components/templates/Templates';
 import './index.css';
 
 function MainContent() {
@@ -32,6 +33,7 @@ function MainContent() {
     case 'timeline': return <Timeline />;
     case 'libraries': return <MoleculeLibrary />;
     case 'settings': return <Settings />;
+    case 'templates': return <Templates />;
     default:
       return (
         <div className="flex-1 flex items-center justify-center bg-[#f8f9fb]">

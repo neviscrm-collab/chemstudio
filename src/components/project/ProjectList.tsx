@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
-import { Flask, Atom, BookOpen, Certificate, Users, ArrowUpRight, Plus, FunnelSimple } from '@phosphor-icons/react';
-import { Card } from '../ui/Card';
+import { Flask, Atom, BookOpen, Certificate, ArrowUpRight, Plus, FunnelSimple } from '@phosphor-icons/react';
 import { Badge } from '../ui/Badge';
 import { Avatar, AvatarGroup } from '../ui/Avatar';
 import { ProgressBar } from '../ui/ProgressBar';
@@ -24,21 +23,21 @@ export function ProjectList() {
   const { selectProject } = useAppStore();
 
   return (
-    <motion.div variants={stagger} initial="initial" animate="animate" className="flex-1 overflow-y-auto bg-[#f8f9fb] p-6">
-      <div className="max-w-[1200px] mx-auto space-y-5">
+    <motion.div variants={stagger} initial="initial" animate="animate" className="flex-1 overflow-y-auto" style={{ background: '#f7f8fc' }}>
+      <div className="max-w-[1100px] mx-auto px-8 py-6 space-y-6">
         {/* Header */}
         <motion.div variants={fadeUp} className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">Research Projects</h2>
-            <p className="text-sm text-gray-500 mt-0.5">4 active · 0 paused · 12 completed lifetime</p>
+            <h2 className="text-xl font-bold text-gray-900">Research Projects</h2>
+            <p className="text-sm text-gray-400 mt-0.5">4 active · 0 paused · 12 completed lifetime</p>
           </div>
           <div className="flex items-center gap-2">
-            <button className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-gray-200 text-gray-500 text-sm hover:bg-gray-50 transition-colors">
-              <FunnelSimple size={13} />
+            <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-200 text-gray-500 text-xs hover:bg-gray-50 transition-colors">
+              <FunnelSimple size={12} />
               Filter
             </button>
-            <button className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm">
-              <Plus size={13} weight="bold" />
+            <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 transition-colors shadow-sm shadow-blue-200">
+              <Plus size={12} weight="bold" />
               New Project
             </button>
           </div>
@@ -48,9 +47,12 @@ export function ProjectList() {
         <motion.div variants={stagger} className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {PROJECTS.map((project) => (
             <motion.div key={project.id} variants={fadeUp}>
-              <Card hover padding="none" onClick={() => selectProject(project.id)}>
+              <div
+                className="bg-white rounded-2xl border border-gray-100 hover:border-gray-200 hover:shadow-md transition-all cursor-pointer overflow-hidden"
+                onClick={() => selectProject(project.id)}
+              >
                 {/* Color bar */}
-                <div className="h-1 rounded-t-xl" style={{ background: project.color }} />
+                <div className="h-1" style={{ background: project.color }} />
                 <div className="p-5">
                   {/* Top */}
                   <div className="flex items-start justify-between gap-3 mb-3">
@@ -96,7 +98,7 @@ export function ProjectList() {
                       { label: 'Publications', value: project.publications, icon: BookOpen },
                       { label: 'Patents', value: project.patents, icon: Certificate },
                     ].map(({ label, value, icon: Icon }) => (
-                      <div key={label} className="text-center py-2 rounded-lg bg-gray-50">
+                      <div key={label} className="text-center py-2 rounded-xl bg-gray-50">
                         <div className="text-sm font-bold text-gray-800">{value}</div>
                         <div className="text-xs text-gray-400 mt-0.5">{label}</div>
                       </div>
@@ -137,7 +139,7 @@ export function ProjectList() {
                     ))}
                   </div>
                 </div>
-              </Card>
+              </div>
             </motion.div>
           ))}
         </motion.div>
